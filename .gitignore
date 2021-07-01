@@ -1,0 +1,13 @@
+.idea
+__pycache__
+api.py 
+model.py
+stock.py
+test.py
+web_crawler.py
+
+base.html
+hi.html
+login.html
+test.html
+user.html

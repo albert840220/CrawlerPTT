@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+<body style="background-color: #0d172c;">
+    <form method="post" action="/">
+        <table>
+            <tr class="table-primary">
+                <th>Board</th>
+                <th>Start Page</th>
+                <th>End Page</th>
+            </tr>
+            <tr>
+                <th><input type="text" placeholder="在這邊輸入" name="Board"></th>
+                <th><input type="text" placeholder="在這邊輸入" name="Start"></th>
+                <th><input type="text" placeholder="在這邊輸入" name="End"></th>
+                <th><button class="btn btn-lg btn-outline-primary btn btn-light" type="submit">Write to database</button></th>
+            </tr>
+        </table>
+    </form>
+    <form method="post" action="/search">
+        <table>
+            <tr class="table-primary">
+                <th>Author</th>
+                <th>Title</th>
+                <th>Max</th>
+            </tr>
+            <tr>
+                <th><input type="text" placeholder="在這邊輸入" name="author"></th>
+                <th><input type="text" placeholder="在這邊輸入" name="title"></th>
+                <th><input type="text" placeholder="在這邊輸入" name="max"></th>
+                <th><button class="btn btn-lg btn-outline-primary btn-light" type="submit">Search</button></th>
+            </tr>
+        </table>
+    </form>
+    <table class="table" bgcolor="white">
+        <thead class="thead-dark">
+            <tr>
+              <th scope="col">author</th>
+              <th scope="col">title</th>
+              <th scope="col">date</th>
+              <th scope="col">commenter</th>
+              <th scope="col">comment</th>
+              <th scope="col">comment_time</th>
+            </tr>
+        </thead>
+        <tbody>
+          <meta charset="UTF-8">
+          {% for i in result %}
+            <tr>
+                <td>{{ i.author}}</td>
+                <td>{{ i.title}}</td>
+                <td>{{ i.date}}</td>
+                <td>{{ i.commenter}}</td>
+                <td>{{ i.comment}}</td>
+                <td>{{ i.comment_time}}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+    </table>
+
+    {% if prev_url %}
+    <a href="{{ prev_url }}">Prev Page</a>
+    {% endif %}
+    {% if next_url %}
+    <a href="{{ next_url }}">Next Page</a>
+    {% endif %}
+</body>
+</html>
