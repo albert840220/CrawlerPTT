@@ -30,13 +30,14 @@ class Craw_data(db.Model):
     author = db.Column(db.String(50))
     title = db.Column(db.String(50))
     date = db.Column(db.DateTime)
+    content = db.Column(db.Text)
     commenter = db.Column(db.String(50))
     comment = db.Column(db.Text)
     comment_time = db.Column(db.Text)
     id = db.Column(db.Integer, primary_key=True)  # 一定要ID
     def __repr__(self):
-        return 'author={}, title={}, date={}, commenter={}, comment={}, comment_time={}'.format(
-            self.author, self.title, self.date, self.commenter, self.comment, self.comment_time)
+        return 'author={}, title={}, date={}, content={}, commenter={}, comment={}, comment_time={}'.format(
+            self.author, self.title, self.date, self.content, self.commenter, self.comment, self.comment_time)
 
 
 class PttCrawler(object):
@@ -123,16 +124,12 @@ class PttCrawler(object):
             # 查詢所有留言時間
             all_comment_time = soup.find_all('span', class_='push-ipdatetime')
             # 留言者相關資訊
-            # for i in range(len(all_commenter)):
-            #     self.all_item.append({'author': author, 'title': title, 'date': date,# 'content': content,
-            #                           'commenter': all_commenter[i].text, 'comment': all_comment[i].text.replace(": ", ""),
-            #                           'comment_time': all_comment_time[i].text.replace("\n", '')})
             for commenter, comment, comment_time in zip(all_commenter, all_comment, all_comment_time):
                 self.all_item.append({
                     'author': author,
                     'title': title,
                     'date': date,
-                    # 'content': content,
+                    'content': content,
                     'commenter': commenter.text,
                     'comment': comment.text.replace(": ", ""),
                     'comment_time': comment_time.text.replace("\n", '')
@@ -208,8 +205,8 @@ def search():
     if request.method == 'POST':
         author = '%'+request.values['author']+'%'
         title = '%'+request.values['title']+'%'
-        max_count = request.values['max']
-        if author != '':
+        # max_count = request.values['max']
+        if author != '%%':
             # sql_data = Craw_data.query.filter_by(author=f'%%{author}%%')filter(Table.name.like('%BOB%')
             search_sql = Craw_data.query.filter(Craw_data.author.like(author))#.order_by(Craw_data.comment_time)# .limit(max_count)
             data_paginate = search_sql.paginate(page=page_num, per_page=5, error_out=False)
@@ -219,8 +216,14 @@ def search():
             return render_template('result.html', result=result, next_url=next_url, prev_url=prev_url)
             # sql_data = Craw_data.query.filter_by(author=f'%%{author}%%')
             # f"""SELECT * FROM craw_data Where author like '%%{author}%%' order by comment_time DESC limit 0,{max_count}"""
-        # else:
-        #     sql_data = Craw_data.query.filter_by(author=f'%%{author}%%')
+        else:
+            search_sql = Craw_data.query.filter(Craw_data.title.like(title))
+            data_paginate = search_sql.paginate(page=page_num, per_page=5, error_out=False)
+            result = data_paginate.items
+            next_url = url_for('search', page=data_paginate.next_num) if data_paginate.has_next else None
+            prev_url = url_for('search', page=data_paginate.prev_num) if data_paginate.has_prev else None
+            return render_template('result.html', result=result, next_url=next_url, prev_url=prev_url)
+            # sql_data = Craw_data.query.filter_by(author=f'%%{author}%%')
             # sql_data = Craw_data.query.filter_by(title=f'%%{title}%%').order_by(Craw_data.comment_time).limit(f'{max_count}')
             # f"""SELECT * FROM craw_data Where title like '%%{title}%%' order by comment_time DESC limit 0,{max_count}"""
     data_paginate = search_sql.paginate(page=page_num, per_page=5, error_out=False)

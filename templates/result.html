@@ -28,12 +28,12 @@
             <tr class="table-primary">
                 <th>Author</th>
                 <th>Title</th>
-                <th>Max</th>
+                <!-- <th>Max</th> -->
             </tr>
             <tr>
                 <th><input type="text" placeholder="在這邊輸入" name="author"></th>
                 <th><input type="text" placeholder="在這邊輸入" name="title"></th>
-                <th><input type="text" placeholder="在這邊輸入" name="max"></th>
+                <!-- <th><input type="text" placeholder="在這邊輸入" name="max"></th> -->
                 <th><button class="btn btn-lg btn-outline-primary btn-light" type="submit">Search</button></th>
             </tr>
         </table>
@@ -44,6 +44,7 @@
               <th scope="col">author</th>
               <th scope="col">title</th>
               <th scope="col">date</th>
+              <th scope="col">content</th>
               <th scope="col">commenter</th>
               <th scope="col">comment</th>
               <th scope="col">comment_time</th>
@@ -56,6 +57,7 @@
                 <td>{{ i.author}}</td>
                 <td>{{ i.title}}</td>
                 <td>{{ i.date}}</td>
+                <td>{{ i.content}}</td>
                 <td>{{ i.commenter}}</td>
                 <td>{{ i.comment}}</td>
                 <td>{{ i.comment_time}}</td>
